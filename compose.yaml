@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16.1
+    container_name: base64fileDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=fileRepository
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=12345
+    networks:
+      - app-network
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
+
+  db-init:
+    image: postgres:16.1
+    container_name: db-init
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint:
+      - bash
+      - -c
+      - |
+        set -e
+        psql postgresql://dbuser:12345@db:5432/fileRepository -v ON_ERROR_STOP=1 <<-EOSQL
+          CREATE TABLE IF NOT EXISTS files (
+            id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            data VARCHAR(7000) NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            description VARCHAR(1000) NOT NULL,
+            creation_date TIMESTAMP WITH TIME ZONE NOT NULL
+          );
+        EOSQL
+    networks:
+      - app-network
+
+  app:
+    build: .
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: fileRepository
+      DB_USERNAME: dbuser
+      DB_PASSWORD: 12345
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-init
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
