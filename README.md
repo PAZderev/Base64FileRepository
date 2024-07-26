@@ -133,7 +133,7 @@ curl -X PUT http://localhost:8080/files \
 -H "Content-Type: application/json" \
 -d '{
   "id": 1,
-  "file": "updated_base64_encoded_file_content",
+  "base64Data": "updated_base64_encoded_file_content",
   "title": "updated_example_file",
   "creation_date": "2024-07-23T16:37:23Z",
   "description": "Updated example description"
