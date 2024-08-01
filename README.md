@@ -14,7 +14,7 @@
 ### Шаг 1: Клонирование репозитория
 
 ```bash
-git clone https://github.com/yourusername/FileRepository.git
+git clone https://github.com/PAZderev/FileRepository.git
 cd FileRepository
 ```
 ### Шаг 2: Сборка проекта
