@@ -12,7 +12,7 @@
 ## Инструкция по запуску приложения
 
 ### Шаг 1: Клонирование репозитория
-
+ 
 ```bash
 git clone https://github.com/PAZderev/FileRepository.git
 cd FileRepository
