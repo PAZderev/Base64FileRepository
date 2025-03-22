@@ -16,7 +16,7 @@
 ```bash
 git clone https://github.com/PAZderev/FileRepository.git
 cd FileRepository
-```
+``` 
 ### Шаг 2: Сборка проекта
 Убедитесь, что у вас установлен Maven и Docker.
 
